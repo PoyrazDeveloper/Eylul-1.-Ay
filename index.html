@@ -1082,6 +1082,26 @@
       transform: translate(-50%, -26px) scale(calc(var(--flowerScale) * 1.18));
       transition: transform .86s cubic-bezier(.35,.08,.2,1), opacity .86s ease;
     }
+    @media (max-width:560px){
+      :root{
+        --proposalLift: clamp(150px, 30dvh, 250px);
+        --proposalDockScale: 1.12;
+        --proposalFlowerScale: 1.2;
+      }
+      .bottomPlant.proposalSpotlight .flowerDock{
+        width:min(292px, 82vw);
+      }
+      .bottomPlant.proposalSpotlight .plantWrap{
+        width:min(300px, 76vw);
+      }
+    }
+    @media (max-width:420px){
+      :root{
+        --proposalLift: clamp(126px, 26dvh, 210px);
+        --proposalDockScale: 1.04;
+        --proposalFlowerScale: 1.12;
+      }
+    }
 
     .plantStage{
       position:absolute;
