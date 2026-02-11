@@ -1699,6 +1699,21 @@
     .rollMonth{ display:inline-block; }
     .rollMon{ display:block; white-space:nowrap; }
     .rollWrap{ white-space:nowrap; }
+    .dateStampWrap{ display:inline-flex; align-items:baseline; justify-content:center; gap:.32ch; }
+    .dateStampMain,.dateStampTime{ display:inline; }
+    @media (max-width:560px){
+      .dateStampWrap{
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+        gap:.08em;
+        line-height:1.02;
+      }
+      .dateStampTime{
+        font-size:.78em;
+        letter-spacing:-.01em;
+      }
+    }
 
 
   /* Simple popup modal */
@@ -3108,7 +3123,8 @@ function hideDateOverlay(){
 
 async function cinematicStamp(fullText, shortText){
   // Big cinematic time stamp, then shrink into header
-  showDateOverlay(fullText);
+  const stamp = formatCinematicStamp(fullText);
+  showDateOverlay(stamp.html, stamp.isHTML);
   await sleep(2500); // stay big
   setHeaderDate(shortText);
   if(datePinToHeader){
@@ -3217,6 +3233,19 @@ function buildDateRollHTML(oldShort, newShort){
   return {
     shouldRoll:false,
     html: `<span class="rollWrap">${escHTML(newShort)}</span>`
+  };
+}
+function formatCinematicStamp(fullText){
+  const raw = String(fullText || "").trim();
+  const m = raw.match(/^(.*?)(?:\s+)(\d{1,2}:\d{2})$/);
+  if(!m){
+    return { html: escHTML(raw), isHTML: true };
+  }
+  const main = escHTML((m[1] || "").trim());
+  const time = escHTML(m[2] || "");
+  return {
+    html: `<span class="dateStampWrap"><span class="dateStampMain">${main}</span><span class="dateStampTime">${time}</span></span>`,
+    isHTML: true
   };
 }
 
